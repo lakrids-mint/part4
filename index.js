@@ -1,5 +1,5 @@
 const http = require("http");
-require("dotenv").config();
+const config = require("./utils/config");
 
 const express = require("express");
 const app = express();
@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 
 const Blog = require("./models/blog");
 
-const mongoUrl = process.env.MONGODB_URI;
+const mongoUrl = config.MONGODB_URI;
 console.log("connecting to db...", mongoUrl);
 mongoose.connect(mongoUrl, { useNewUrlParser: true });
 
@@ -30,7 +30,6 @@ app.post("/api/blogs", (request, response) => {
   });
 });
 
-const PORT = 3003;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`);
 });
