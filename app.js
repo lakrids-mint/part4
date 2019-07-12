@@ -1,18 +1,21 @@
 const config = require("./utils/config");
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const supertest = require("supertest");
 const app = express();
+const api = supertest(app);
 const cors = require("cors");
 const blogsRouter = require("./controllers/blogs");
 const middleware = require("./utils/middleware");
-const mongoose = require("mongoose");
+const logger = require("./utils/logger");
 
-console.log("connecting to db: ", config.MONGODB_URI);
+logger.info("connecting to", config.MONGODB_URI);
 
 mongoose
   .connect(config.MONGODB_URI, { useNewUrlParser: true })
-  .then(() => console.log("connected to db"))
-  .catch(e => console.log(e.message));
+  .then(() => logger.info("connected to MongoDB"))
+  .catch(e => logger.error("error connection to MongoDB:", e.message));
 
 app.use(cors());
 //app.use(express.static("build"));
